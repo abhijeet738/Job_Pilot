@@ -1,0 +1,51 @@
+# JobPilot preferences. Edit freely; the app re-reads this file on every access.
+# Keys must match settings.py -> Preferences exactly (unknown keys are rejected).
+
+candidate_name: "Your Name"
+
+# A job title must contain one of these (matched after normalizing).
+target_roles:
+  - "Backend Engineer"
+  - "Software Engineer"
+  - "SDE"
+  - "Python Developer"
+
+# A job title containing any of these is rejected before any LLM call.
+title_exclude_keywords: ["intern", "principal", "staff", "director", "manager", "sales"]
+
+seniority:
+  min_years_required_ok: 0
+  max_years_required_ok: 4        # reject jobs that ask for more than this
+
+locations:
+  accept: ["Bengaluru", "Bangalore", "Hyderabad", "Pune", "Gurugram", "Noida",
+           "Mumbai", "Chennai", "India", "Remote"]
+  remote_ok: true
+  remote_must_allow_india: true   # a remote job must mention India/APAC/anywhere
+
+salary:
+  currency: INR
+  min_annual: 1200000             # drop jobs whose published max is below this
+
+matching:
+  fit_threshold: 70               # 0-100; a score below this -> REJECTED_FIT
+
+caps:
+  per_day: 15                     # normal daily target
+  hard_max_per_day: 20            # never exceeded, even if you raise per_day
+  per_company_per_30_days: 2
+
+autonomy:
+  # Until this date every submission needs your approval. Set it to the date you
+  # expect to pass the T7.4 gate (30 approved, zero misses), not a fixed guess.
+  require_approval_until: "2027-01-31"
+  auto_submit_min_confidence: 0.85
+
+schedule:
+  discovery_every_hours: 4
+  apply_window: { start: "09:00", end: "22:00" }   # local time (Asia/Kolkata)
+  apply_every_minutes: 30
+  max_jobs_per_apply_run: 3
+
+# Companies you never want to apply to (e.g. your current employer).
+blocklist_companies: ["Current Employer Pvt Ltd"]

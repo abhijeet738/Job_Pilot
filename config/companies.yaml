@@ -1,0 +1,25 @@
+# Companies the Scout watches. One entry per company.
+#
+# ats:  greenhouse | lever | ashby | workday | custom
+# slug: the board token taken from the careers URL:
+#         greenhouse -> job-boards.greenhouse.io/<slug>   (or boards.greenhouse.io/<slug>)
+#         lever      -> jobs.lever.co/<slug>
+#         ashby      -> jobs.ashbyhq.com/<slug>
+#         workday    -> <slug>.wd5.myworkdayjobs.com      (no feed until Phase 8)
+#         custom     -> leave slug as the company name in lowercase (JSON-LD or page extraction)
+# priority: 1 = dream company, 2 = good, 3 = default. Lower number is applied to first.
+#
+# The two entries below are PLACEHOLDERS. Replace them with real companies,
+# or generate this file with:  jobpilot companies detect urls.txt
+
+- name: "Example Startup"
+  ats: lever
+  slug: examplestartup
+  careers_url: "https://jobs.lever.co/examplestartup"
+  priority: 1
+
+- name: "Another Co"
+  ats: greenhouse
+  slug: anotherco
+  careers_url: "https://job-boards.greenhouse.io/anotherco"
+  priority: 2

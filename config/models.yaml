@@ -1,0 +1,24 @@
+# LLM configuration. Any LiteLLM model string works ("anthropic/...", "openai/...", "gemini/...").
+# Switching provider = change the two tier lines below and set that provider's key in .env.
+
+tiers:
+  cheap: "anthropic/claude-haiku-5-5"     # high volume, low risk
+  strong: "anthropic/claude-sonnet-5-5"   # anything that can cost a real application
+
+# Which tier each agent uses. Every agent name here must exist in the code;
+# llm/client.py looks up cfg["tiers"][cfg["agents"][agent]].
+agents:
+  resume_parse: strong     # one-off; errors would poison the profile
+  match_score: cheap       # runs on every job that passes the hard filters
+  field_map: cheap         # batch mapping of short form fields
+  answer_draft: strong     # free-text answers go to real recruiters
+  verify: strong           # the safety net: do not downgrade this
+  email_classify: cheap
+  extract_jobs: cheap
+  agent_step: strong       # generic browser agent (Phase 8)
+  strategist: strong       # weekly report, low volume
+
+limits:
+  max_retries: 2           # Instructor re-asks the model when validation fails
+  timeout_seconds: 60
+  monthly_budget_usd: 25   # calls are refused past this; the bot notifies you
