@@ -1,0 +1,44 @@
+# Label patterns -> canonical keys. No LLM call is involved.
+#
+# Matching: case-insensitive regex (re.search) against normalize(label).
+# The FIRST key whose pattern matches wins, so keep specific keys above general ones.
+# Patterns are in single quotes so backslashes (\b) are literal.
+# Every key must exist in the canonical key list (plan Appendix 17.1).
+
+first_name: ['^first name', '^given name']
+last_name: ['^last name', '^surname', '^family name']
+full_name: ['^full name$', '^name$', '^your name']
+email: ['e-?mail']
+phone: ['phone', 'mobile', 'contact number']
+linkedin_url: ['linkedin']
+github_url: ['github']
+portfolio_url: ['portfolio', 'personal (web)?site', '^website']
+resume: ['resume', '\bcv\b']
+cover_letter: ['cover letter']
+current_location: ['current (city|location)', 'where are you (currently )?(based|located)', '^location$']
+current_company: ['current (company|employer)']
+current_title: ['current (title|role|designation)']
+notice_period: ['notice period', 'earliest start', 'when can you (start|join)']
+current_ctc: ['current (ctc|salary|compensation)']
+expected_ctc: ['expected (ctc|salary|compensation)', 'salary expectation']
+years_experience: ['years of (professional |relevant )?experience', 'total experience']
+work_authorization_india: ['authori[sz]ed to work in india', 'legally (eligible|authorized).*india']
+requires_sponsorship: ['sponsorship', '\bvisa\b']
+willing_to_relocate: ['relocat']
+how_did_you_hear: ['how did you hear', 'where did you (hear|find)', '\bsource\b']
+
+# Voluntary self-identification (defaults to "prefer not to say" from onboarding)
+gender: ['^gender']
+pronouns: ['pronoun']
+veteran_status: ['veteran']
+disability_status: ['disabilit']
+ethnicity: ['ethnic', '\brace\b']
+
+# Consent: only ever checked if standard_answers["auto_consent_recruiting_privacy"] == "yes".
+# Marketing / newsletter boxes deliberately have no pattern here, so they are never ticked.
+auto_consent_recruiting_privacy: ['privacy (notice|policy)', 'data processing', 'consent to (the )?(processing|storage)']
+
+# Free-text keys: these route to the Tailor's grounded drafting, not to a profile getter.
+why_this_role: ['why (do you want|are you interested|this (role|company))']
+about_me_short: ['tell us about yourself', 'about yourself']
+biggest_project: ['describe a project', 'project you.?re proud']
