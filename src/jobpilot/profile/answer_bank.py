@@ -50,7 +50,9 @@ class AnswerHit:
 
 
 @lru_cache(maxsize=4)
-def _compiled_aliases(path: str, mtime_ns: int) -> tuple[tuple[str, tuple[re.Pattern[str], ...]], ...]:
+def _compiled_aliases(
+    path: str, mtime_ns: int
+) -> tuple[tuple[str, tuple[re.Pattern[str], ...]], ...]:
     """Parse field_aliases.yaml. mtime_ns is part of the cache key, so edits apply at once."""
     raw: Any = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     if not isinstance(raw, dict):

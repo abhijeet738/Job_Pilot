@@ -14,7 +14,13 @@ from jobpilot.core.enums import FieldType
 from jobpilot.core.models import FormField
 from jobpilot.db import repo
 from jobpilot.profile import answer_bank
-from jobpilot.profile.answer_bank import canonical_key_for, canonical_keys, lookup, match_option, save
+from jobpilot.profile.answer_bank import (
+    canonical_key_for,
+    canonical_keys,
+    lookup,
+    match_option,
+    save,
+)
 from jobpilot.settings import get_settings
 
 pytestmark = pytest.mark.usefixtures("tmp_db")
@@ -144,7 +150,11 @@ def test_match_option_refuses_lookalike_options(answer: str, options: list[str])
 
 def test_a_stored_answer_not_among_the_options_is_refused() -> None:
     save("Notice period", "30 days", TEXT)
-    field = _field("Notice period", FieldType.SELECT, ["Immediate", "Within 30 days", "Within 60 days"])
+    field = _field(
+        "Notice period",
+        FieldType.SELECT,
+        ["Immediate", "Within 30 days", "Within 60 days"],
+    )
     assert lookup("Notice period", field) is None  # asked, never guessed
 
 
@@ -167,7 +177,10 @@ def test_the_options_own_text_is_returned_not_the_stored_wording() -> None:
 @pytest.mark.parametrize("type_", [FieldType.SELECT, FieldType.COMBOBOX, FieldType.RADIO])
 def test_every_choice_type_checks_the_options(type_: FieldType) -> None:
     save("Willing to relocate", "Yes", FieldType.RADIO)
-    assert lookup("Willing to relocate", _field("Willing to relocate", type_, ["No", "Maybe"])) is None
+    assert (
+        lookup("Willing to relocate", _field("Willing to relocate", type_, ["No", "Maybe"]))
+        is None
+    )
     hit = lookup("Willing to relocate", _field("Willing to relocate", type_, ["Yes", "No"]))
     assert hit is not None
     assert hit.value == "Yes"
@@ -207,7 +220,11 @@ def test_checkbox_group_round_trip() -> None:
     entry = save("Which cloud platforms do you use", ["AWS", "GCP"], FieldType.CHECKBOX_GROUP)
     assert entry is not None
     assert json.loads(entry.answer) == ["AWS", "GCP"]
-    field = _field("Which cloud platforms do you use", FieldType.CHECKBOX_GROUP, ["AWS", "Azure", "GCP"])
+    field = _field(
+        "Which cloud platforms do you use",
+        FieldType.CHECKBOX_GROUP,
+        ["AWS", "Azure", "GCP"],
+    )
     hit = lookup("Which cloud platforms do you use", field)
     assert hit is not None
     assert hit.value == ["AWS", "GCP"]
@@ -221,7 +238,10 @@ def test_checkbox_group_is_refused_if_any_choice_is_missing() -> None:
 
 def test_a_plain_text_answer_works_as_a_one_item_group() -> None:
     save("Cloud platforms used", "AWS", FieldType.CHECKBOX_GROUP)
-    hit = lookup("Cloud platforms used", _field("Cloud platforms used", FieldType.CHECKBOX_GROUP, ["AWS", "GCP"]))
+    hit = lookup(
+        "Cloud platforms used",
+        _field("Cloud platforms used", FieldType.CHECKBOX_GROUP, ["AWS", "GCP"]),
+    )
     assert hit is not None
     assert hit.value == ["AWS"]
 
@@ -322,7 +342,10 @@ def test_why_this_role_is_never_stored(key: str | None) -> None:
 
 def test_a_job_specific_key_is_never_reused_by_key() -> None:
     repo.save_answer(
-        question_raw="Why Acme?", answer="Because Acme", field_type="text", canonical_key="why_this_role"
+        question_raw="Why Acme?",
+        answer="Because Acme",
+        field_type="text",
+        canonical_key="why_this_role",
     )
     assert _lookup("Why do you want this role?") is None
 
@@ -381,7 +404,8 @@ def test_real_labels_map_to_the_right_key(label: str, key: str) -> None:
     "label", ["Favourite colour", "Resource planning", "Advisable steps", "", "  *  "]
 )
 def test_unrelated_labels_map_to_nothing(label: str) -> None:
-    assert canonical_key_for(label) is None  # note: word boundaries stop 'resource' matching 'source'
+    # Word boundaries prevent labels such as "resource" from matching "source".
+    assert canonical_key_for(label) is None
 
 
 def test_canonical_keys_cover_the_plan_appendix() -> None:
@@ -404,7 +428,9 @@ def test_canonical_keys_cover_the_plan_appendix() -> None:
 # ------------------------------------------------------------------------- the alias file
 
 
-def test_the_first_matching_key_in_the_file_wins(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_the_first_matching_key_in_the_file_wins(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     _use_alias_file(tmp_path, monkeypatch, "a: ['^x']\nb: ['^x']\n")
     assert canonical_key_for("x marks the spot") == "a"
 

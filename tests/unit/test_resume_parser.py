@@ -255,7 +255,15 @@ def test_a_phone_written_with_spaces_still_matches(resume_pdf: Path) -> None:
 
 def test_several_problems_are_all_reported() -> None:
     parsed = _parsed(email="x@y.com", skills=["Cobol"])
-    assert len(suspect_values(parsed, "Northwind Labs Contoso Apps Test Institute of Technology")) >= 3
+    assert (
+        len(
+            suspect_values(
+                parsed,
+                "Northwind Labs Contoso Apps Test Institute of Technology",
+            )
+        )
+        >= 3
+    )
 
 
 # ------------------------------------------------------------------------------ to_profile
@@ -264,7 +272,13 @@ def test_several_problems_are_all_reported() -> None:
 def test_to_profile_builds_a_valid_profile() -> None:
     profile = to_profile(
         _parsed(),
-        resumes=[ResumeVariant(key="backend", path="data/resumes/backend.pdf", best_for=["python"])],
+        resumes=[
+            ResumeVariant(
+                key="backend",
+                path="data/resumes/backend.pdf",
+                best_for=["python"],
+            )
+        ],
         standard_answers={"notice_period": "30 days"},
     )
     assert isinstance(profile, Profile)

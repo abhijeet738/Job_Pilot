@@ -151,7 +151,8 @@ def test_lists_render_one_item_per_line() -> None:
     lines = user.splitlines()
     assert "- skill.python: Skill: Python" in lines
     assert any(
-        line.startswith('- f0 | select | "Notice period"') and "options: Immediate / 30 days" in line
+        line.startswith('- f0 | select | "Notice period"')
+        and "options: Immediate / 30 days" in line
         and line.endswith("required")
         for line in lines
     )
@@ -367,9 +368,10 @@ async def test_ask_passes_the_right_arguments_and_logs_the_call(
     assert "Backend Engineer" in kw["messages"][1]["content"]
 
     assert repo.month_llm_cost() == pytest.approx(0.0123)
+    from sqlmodel import select
+
     from jobpilot.db.session import get_session
     from jobpilot.db.tables import LLMCall
-    from sqlmodel import select
 
     with get_session() as s:
         (row,) = s.exec(select(LLMCall)).all()
@@ -432,7 +434,11 @@ async def test_fake_llm_returns_responses_in_order_then_repeats_the_last(fake_ll
     second = MatchResult(score=90, decision="apply")
     fake_llm.set("match_score", first, second)
     scores = [
-        (await client.ask("match_score", "match_score", MatchResult, **SAMPLES["match_score"])).score
+        (
+            await client.ask(
+                "match_score", "match_score", MatchResult, **SAMPLES["match_score"]
+            )
+        ).score
         for _ in range(3)
     ]
     assert scores == [10, 90, 90]
@@ -444,8 +450,8 @@ async def test_fake_llm_fails_loudly_when_nothing_is_registered(fake_llm: Any) -
 
 
 async def test_fake_llm_rejects_a_response_of_the_wrong_type(fake_llm: Any) -> None:
-    from jobpilot.core.models import VerifyResult
     from jobpilot.core.enums import Verdict
+    from jobpilot.core.models import VerifyResult
 
     fake_llm.set("match_score", VerifyResult(verdict=Verdict.PASS, confidence=1.0))
     with pytest.raises(AssertionError, match="expects MatchResult"):

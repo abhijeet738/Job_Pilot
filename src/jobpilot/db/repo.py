@@ -692,7 +692,8 @@ def insert_email_event(
 def latest_email_received() -> datetime | None:
     """Newest stored email date (UTC): where the next inbox poll should start."""
     with get_session() as s:
-        return s.exec(select(func.max(EmailEvent.received_at))).one()
+        latest = s.exec(select(func.max(EmailEvent.received_at))).one()
+        return latest.replace(tzinfo=None) if latest is not None else None
 
 
 def list_email_events(application_id: int | None = None, limit: int = 100) -> list[EmailEvent]:

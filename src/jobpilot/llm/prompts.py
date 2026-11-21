@@ -36,6 +36,8 @@ def split_sections(source: str, label: str = "prompt") -> tuple[str, str]:
     user = _USER_HEADING.search(source)
     if system is None or user is None:
         raise PromptError(f"{label}: needs a '## system' and a '## user' heading")
+    if user.start() < system.start():
+        raise PromptError(f"{label}: '## system' must come before '## user'")
     if source[: system.start()].strip():
         raise PromptError(f"{label}: text before the '## system' heading")
     if user.start() < system.end():
@@ -56,7 +58,9 @@ def _compile(path: str, mtime_ns: int) -> tuple[Template, Template]:
     try:
         return env.from_string(system_src), env.from_string(user_src)
     except TemplateSyntaxError as e:
-        raise PromptError(f"{file.name}: template syntax error on line {e.lineno}: {e.message}") from e
+        raise PromptError(
+            f"{file.name}: template syntax error on line {e.lineno}: {e.message}"
+        ) from e
 
 
 def render(name: str, **variables: object) -> tuple[str, str]:

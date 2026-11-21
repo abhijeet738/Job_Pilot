@@ -239,7 +239,9 @@ def answers_list(
 
 
 @answers_app.command("edit")
-def answers_edit(key: Annotated[str, typer.Argument(help="Canonical key, e.g. notice_period")]) -> None:
+def answers_edit(
+    key: Annotated[str, typer.Argument(help="Canonical key, e.g. notice_period")],
+) -> None:
     """Change the newest stored answer for a canonical key."""
     with _friendly_errors():
         init_db()
@@ -256,7 +258,9 @@ def answers_edit(key: Annotated[str, typer.Argument(help="Canonical key, e.g. no
 
 
 @answers_app.command("delete")
-def answers_delete(answer_id: Annotated[int, typer.Argument(help="Id from `answers list`")]) -> None:
+def answers_delete(
+    answer_id: Annotated[int, typer.Argument(help="Id from `answers list`")],
+) -> None:
     """Delete one stored answer."""
     with _friendly_errors():
         init_db()

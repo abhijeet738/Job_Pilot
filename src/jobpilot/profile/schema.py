@@ -157,15 +157,26 @@ class Profile(BaseModel):
         for i, e in enumerate(self.experience):
             end = e.end.isoformat() if e.end else "present"
             out.append(
-                Fact(id=f"exp.{i}", text=f"{e.title} at {e.company}, {e.start.isoformat()} to {end}")
+                Fact(
+                    id=f"exp.{i}",
+                    text=f"{e.title} at {e.company}, {e.start.isoformat()} to {end}",
+                )
             )
             if e.location:
-                out.append(Fact(id=f"exp.{i}.location", text=f"Location of {e.title} role: {e.location}"))
+                out.append(
+                    Fact(
+                        id=f"exp.{i}.location",
+                        text=f"Location of {e.title} role: {e.location}",
+                    )
+                )
             for j, bullet in enumerate(e.bullets):
                 out.append(Fact(id=f"exp.{i}.b{j}", text=bullet))
             if e.tech:
                 out.append(
-                    Fact(id=f"exp.{i}.tech", text=f"Technologies used at {e.company}: {', '.join(e.tech)}")
+                    Fact(
+                        id=f"exp.{i}.tech",
+                        text=f"Technologies used at {e.company}: {', '.join(e.tech)}",
+                    )
                 )
 
         for i, ed in enumerate(self.education):
@@ -189,7 +200,12 @@ class Profile(BaseModel):
             if not name or name.lower() in seen_skills:
                 continue
             seen_skills.add(name.lower())
-            out.append(Fact(id=_unique_id("skill." + _skill_slug(name), used), text=f"Skill: {name}"))
+            out.append(
+                Fact(
+                    id=_unique_id("skill." + _skill_slug(name), used),
+                    text=f"Skill: {name}",
+                )
+            )
 
         for key, value in self.standard_answers.items():
             if value.strip():

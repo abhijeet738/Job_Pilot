@@ -417,7 +417,12 @@ def test_a_clean_run_builds_a_profile(tmp_path: Path) -> None:
 
 def test_suspect_values_are_shown_first(tmp_path: Path) -> None:
     p = ScriptedPrompter(asks=BASE_ASKS)
-    onboard(_parsed(), ["skill 'Kubernetes' is not in the resume text"], p, resume_pdf=_pdf(tmp_path))
+    onboard(
+        _parsed(),
+        ["skill 'Kubernetes' is not in the resume text"],
+        p,
+        resume_pdf=_pdf(tmp_path),
+    )
     assert "Check these first" in p.said[0]
     assert "Kubernetes" in p.said[1]
 
@@ -439,7 +444,11 @@ def test_a_bad_edit_is_rejected_and_the_review_reopens(tmp_path: Path) -> None:
 
 
 def test_closing_the_editor_without_saving_changes_nothing(tmp_path: Path) -> None:
-    p = ScriptedPrompter(asks=BASE_ASKS, confirms={"experience section": [False, True]}, edits=[None])
+    p = ScriptedPrompter(
+        asks=BASE_ASKS,
+        confirms={"experience section": [False, True]},
+        edits=[None],
+    )
     profile = onboard(_parsed(), [], p, resume_pdf=_pdf(tmp_path))
     assert profile is not None
     assert profile.experience == Profile.model_validate_json(FIXTURE.read_text("utf-8")).experience

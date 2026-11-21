@@ -128,7 +128,9 @@ def test_missing_optional_values_produce_no_facts(profile: Profile) -> None:
     ids = {f.id for f in profile.facts(TODAY)}
     assert "link.portfolio" not in ids  # portfolio_url is null
     assert "exp.2.location" not in ids  # the freelance job has no location
-    blank = profile.model_copy(update={"summary": "   ", "standard_answers": {"notice_period": " "}})
+    blank = profile.model_copy(
+        update={"summary": "   ", "standard_answers": {"notice_period": " "}}
+    )
     blank_ids = {f.id for f in blank.facts(TODAY)}
     assert "summary" not in blank_ids
     assert "std.notice_period" not in blank_ids

@@ -7,7 +7,7 @@ No other module imports litellm. Callers must use `from ..llm import client` and
 
 import os
 from functools import cache
-from typing import Any, TypeVar
+from typing import Any
 
 import instructor
 import litellm
@@ -18,8 +18,6 @@ from ..db import repo
 from ..log import get_logger
 from ..settings import get_settings
 from .prompts import render
-
-T = TypeVar("T", bound=BaseModel)
 
 log = get_logger(__name__)
 
@@ -86,7 +84,7 @@ def _cost_of(raw: Any, agent: str, model: str) -> float:
     return float(cost)
 
 
-async def ask(
+async def ask[T: BaseModel](
     agent: str,
     prompt: str,
     response_model: type[T],
