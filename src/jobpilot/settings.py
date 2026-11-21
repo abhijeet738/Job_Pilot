@@ -8,6 +8,7 @@ from typing import Any
 import yaml
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from .core.enums import ATS
 
 
 class Seniority(BaseModel):
@@ -70,6 +71,16 @@ class Preferences(BaseModel):
     schedule: Schedule = Field(default_factory=Schedule)
     blocklist_companies: list[str] = Field(default_factory=list)
 
+class CompanyConfig(BaseModel):
+    """One entry of config/companies.yaml. Unknown keys are rejected to catch typos."""
+
+    model_config = {"extra": "forbid"}
+
+    name: str = Field(min_length=1)
+    ats: ATS
+    slug: str = Field(min_length=1)
+    careers_url: str = Field(min_length=1)
+    priority: int = Field(default=3, ge=1, le=5)  # 1 = dream company
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
@@ -109,6 +120,32 @@ class Settings(BaseSettings):
     def preferences(self) -> Preferences:
         """Validated preferences. Re-read on each access so edits apply without a restart."""
         return Preferences.model_validate(self.load_yaml("preferences.yaml"))
+
+    def load_companies(self) -> list[CompanyConfig]:
+        """Validated entries of companies.yaml. Raises ValueError listing every bad entry."""
+        raw = yaml.safe_load((self.config_dir / "companies.yaml").read_text(encoding="utf-8"))
+        if raw is None:
+            return []
+        if not isinstance(raw, list):
+            raise ValueError("companies.yaml must be a list of companies")
+        companies: list[CompanyConfig] = []
+        problems: list[str] = []
+        seen: set[tuple[str, str]] = set()
+        for i, item in enumerate(raw, start=1):
+            try:
+                company = CompanyConfig.model_validate(item)
+            except ValueError as e:
+                problems.append(f"entry {i}: {str(e).splitlines()[0]}")
+                continue
+            pair = (company.ats.value, company.slug)
+            if pair in seen:
+                problems.append(f"entry {i}: {company.ats.value}/{company.slug} is listed twice")
+                continue
+            seen.add(pair)
+            companies.append(company)
+        if problems:
+            raise ValueError("companies.yaml has problems:\n  " + "\n  ".join(problems))
+        return companies    
 
 
 @lru_cache

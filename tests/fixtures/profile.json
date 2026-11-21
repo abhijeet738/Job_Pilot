@@ -1,0 +1,104 @@
+{
+  "first_name": "Asha",
+  "last_name": "Testcandidate",
+  "email": "asha.testcandidate@example.com",
+  "phone": "+919000012345",
+  "current_location": "Pune, India",
+  "linkedin_url": "https://www.linkedin.com/in/asha-testcandidate",
+  "github_url": "https://github.com/asha-testcandidate",
+  "portfolio_url": null,
+  "summary": "Backend engineer who builds Python APIs and data pipelines.",
+  "experience": [
+    {
+      "company": "Northwind Labs",
+      "title": "Software Engineer",
+      "start": "2024-01-15",
+      "end": null,
+      "location": "Pune",
+      "bullets": [
+        "Built REST APIs in FastAPI serving internal analytics dashboards.",
+        "Reduced nightly report generation time from 40 minutes to 12 minutes.",
+        "Wrote integration tests with pytest for the billing service."
+      ],
+      "tech": ["Python", "FastAPI", "PostgreSQL", "Docker"]
+    },
+    {
+      "company": "Contoso Apps",
+      "title": "Junior Developer",
+      "start": "2023-02-01",
+      "end": "2024-03-31",
+      "location": "Remote",
+      "bullets": [
+        "Maintained a Django web application used by 2,000 customers.",
+        "Fixed 30 production bugs during on-call rotations."
+      ],
+      "tech": ["Python", "Django", "SQL"]
+    },
+    {
+      "company": "Self-employed",
+      "title": "Freelance Developer",
+      "start": "2023-06-01",
+      "end": "2023-12-31",
+      "location": null,
+      "bullets": [
+        "Built a booking website for a local clinic."
+      ],
+      "tech": ["Node.js"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Test Institute of Technology",
+      "degree": "B.Tech",
+      "field": "Computer Science",
+      "start_year": 2019,
+      "end_year": 2023,
+      "grade": "8.1 CGPA"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Expense Tracker",
+      "description": "A command-line tool that categorises bank statements.",
+      "tech": ["Python", "SQLite"],
+      "url": "https://github.com/asha-testcandidate/expense-tracker"
+    },
+    {
+      "name": "Chess Clock",
+      "description": "A small web app with a configurable chess clock.",
+      "tech": [],
+      "url": null
+    }
+  ],
+  "skills": ["Python", "SQL", "FastAPI", "PostgreSQL", "Docker", "Git", "C++", "C#", "Node.js"],
+  "resumes": [
+    {
+      "key": "backend",
+      "path": "data/resumes/resume_backend.pdf",
+      "best_for": ["backend", "python", "api"]
+    },
+    {
+      "key": "fullstack",
+      "path": "data/resumes/resume_fullstack.pdf",
+      "best_for": ["fullstack", "react", "frontend"]
+    }
+  ],
+  "standard_answers": {
+    "notice_period": "30 days",
+    "current_ctc": "9 LPA",
+    "expected_ctc": "14 LPA",
+    "work_authorization_india": "Yes",
+    "requires_sponsorship": "No",
+    "willing_to_relocate": "Yes",
+    "how_did_you_hear": "Company website",
+    "gender": "Prefer not to say",
+    "pronouns": "Prefer not to say",
+    "veteran_status": "Prefer not to say",
+    "disability_status": "Prefer not to say",
+    "ethnicity": "Prefer not to say",
+    "auto_consent_recruiting_privacy": "yes",
+    "why_this_role_template": "I enjoy building reliable backend services, and this role matches the work I do today.",
+    "about_me_short": "I am a backend engineer with three years of experience in Python. I like building small, well-tested services.",
+    "biggest_project": "I built REST APIs in FastAPI for internal analytics dashboards. I also cut nightly report time from 40 to 12 minutes."
+  }
+}
