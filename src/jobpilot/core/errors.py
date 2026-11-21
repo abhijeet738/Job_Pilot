@@ -27,3 +27,13 @@ class BudgetExceeded(JobPilotError):
 
 class DuplicateApplication(JobPilotError):
     """An application for this job already exists."""
+
+
+class PromptError(JobPilotError):
+    """A prompt file is missing or malformed, or a template variable is undefined."""
+
+class LLMError(JobPilotError):
+    """The LLM layer is misconfigured (unknown agent or tier in models.yaml)."""
+
+class ResumeError(JobPilotError):
+    """The resume PDF cannot be used (missing, scanned, too large or unreadable)."""
